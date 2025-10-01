@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8">
+<script>
+  const q = new URLSearchParams(location.search);
+  const target =
+    `fitbet://checkout/success?session_id=${encodeURIComponent(q.get('session_id')||'')}` +
+    `&challenge_id=${encodeURIComponent(q.get('challenge_id')||'')}` +
+    `&uid=${encodeURIComponent(q.get('uid')||'')}`;
+  location.replace(target);
+</script>
+

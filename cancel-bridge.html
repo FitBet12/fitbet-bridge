@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8">
+<script>
+  const q = new URLSearchParams(location.search);
+  const target = `fitbet://checkout/cancel?challenge_id=${encodeURIComponent(q.get('challenge_id')||'')}`;
+  location.replace(target);
+</script>
