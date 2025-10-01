@@ -1,10 +1,55 @@
-<!doctype html><meta charset="utf-8">
-<script>
-  const q = new URLSearchParams(location.search);
-  const target =
-    `fitbet://checkout/success?session_id=${encodeURIComponent(q.get('session_id')||'')}` +
-    `&challenge_id=${encodeURIComponent(q.get('challenge_id')||'')}` +
-    `&uid=${encodeURIComponent(q.get('uid')||'')}`;
-  location.replace(target);
-</script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment successful • FitBet</title>
+  <style>
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; margin:0; background:#0b0f14; color:#eef2f6; display:flex; min-height:100vh; }
+    .wrap { margin:auto; text-align:center; max-width:560px; padding:28px; }
+    .card { background:#111827; border:1px solid #1f2937; border-radius:16px; padding:28px; }
+    h1 { font-size:22px; margin:10px 0; }
+    p { opacity:.9; line-height:1.55; font-size:15px; }
+    .btn { display:inline-block; margin-top:16px; padding:12px 16px; font-weight:700; border-radius:10px; text-decoration:none; background:#22c55e; color:#081016; }
+    .note { margin-top:10px; font-size:12px; opacity:.7; }
+    code { background:#0b1220; padding:2px 4px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div style="font-size:36px">✅</div>
+      <h1>Payment successful</h1>
+      <p>Your FitBet entry is confirmed. We’re opening the app now…</p>
+      <a id="openApp" class="btn" href="#">Open FitBet</a>
+      <p class="note">If nothing happens, tap <b>Open FitBet</b> above. On desktop this page won’t open the app.</p>
+    </div>
+  </div>
+
+  <script>
+    // read Stripe params
+    const q = new URLSearchParams(location.search);
+    const session = q.get('session_id') || '';
+    const challenge = q.get('challenge_id') || '';
+    const uid = q.get('uid') || '';
+
+    // build deep link
+    const deeplink = `fitbet://checkout/success?session_id=${encodeURIComponent(session)}&challenge_id=${encodeURIComponent(challenge)}&uid=${encodeURIComponent(uid)}`;
+
+    // set button href as manual fallback
+    const btn = document.getElementById('openApp');
+    btn.href = deeplink;
+
+    // try auto-open on mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // small delay so the UI renders, then try to open
+      setTimeout(() => {
+        window.location.href = deeplink;
+      }, 400);
+    }
+  </script>
+</body>
+</html>
+
 
